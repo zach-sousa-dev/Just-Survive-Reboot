@@ -50,12 +50,11 @@ public class PlayerController : MonoBehaviour
         if (!cc.isGrounded) {
             yVel -= gravity * Time.deltaTime;
         } else {
-            yVel = -gravity * Time.deltaTime;
+            yVel = -cc.stepOffset / Time.deltaTime;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && cc.isGrounded) {
             yVel = jumpForce;
-            Debug.Log("penis!");
         }
 
         move.y = yVel;
