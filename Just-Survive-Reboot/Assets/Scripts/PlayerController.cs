@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         if (!cc.isGrounded) {
             yVel -= gravity * Time.deltaTime;
         } else {
-            yVel = -cc.stepOffset / Time.deltaTime;
+            yVel = (-cc.stepOffset / Time.deltaTime) / 100;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && cc.isGrounded) {
