@@ -11,7 +11,14 @@ public class PlayerController : MonoBehaviour
 
     private float mouseSens = 1f;
 
-    [SerializeField] private float movementSpeed = 10f;
+    [Header("Ground Control")]
+    [SerializeField] private float runningSpeed = 10f;
+    [SerializeField] private float walkingSpeed = 10f;
+    [SerializeField] private bool shiftInversion = false;
+    private bool isRunning = false;
+    private float movementSpeed = 10f;
+
+    [Header("In-Air Movement")]
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float gravity = 5f;
     [SerializeField] private float yVel = 0;
@@ -48,8 +55,13 @@ public class PlayerController : MonoBehaviour
         if (rawInput.z == 0 && rawInput.x == 0) {
             processedInput = transform.forward * 0 + transform.right * 0;
         }
-        if(cc.isGrounded) {
-            processedInput.Normalize();
+        processedInput.Normalize();
+        if (cc.isGrounded) {
+            if (Input.GetKey(KeyCode.LeftShift) == !shiftInversion) {
+                movementSpeed = runningSpeed;
+            } else {
+                movementSpeed = walkingSpeed;
+            }
             move = processedInput * movementSpeed;    //multiply by movement speed
         } else {
             move = Vector3.Lerp(move, processedInput * (movementSpeed), airMovementAccel * Time.deltaTime);
@@ -78,6 +90,18 @@ public class PlayerController : MonoBehaviour
 
 
 
-        cc.Move(move * Time.deltaTime * movementSpeed);                                                     //execute move
+        cc.Move(move * Time.deltaTime);                                                     //execute move
+    }
+
+
+    /**
+     * enable/disableRunInversion
+     * These are used to toggle whether or not we want running to be default or bound to shift
+     */
+    public void enableRunInversion() {
+        shiftInversion = true;
+    }
+    public void disableRunInversion() {
+        shiftInversion = false;
     }
 }
