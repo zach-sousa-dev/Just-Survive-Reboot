@@ -30,13 +30,13 @@ public class Enemy : MonoBehaviour
     void Update()
     {
 
-        
+        agent.SetDestination(target.transform.position);
 
 
         elapsed += Time.deltaTime;
-        if (elapsed > 1.0f && target != null)
+        if (elapsed > 0.5f && target != null)
         {
-            elapsed -= 1.0f;
+            elapsed -= 0.5f;
             NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path);
         }
         
