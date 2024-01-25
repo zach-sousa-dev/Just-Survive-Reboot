@@ -65,7 +65,7 @@ public abstract class AbstractTurret : MonoBehaviour
     {
         if(hasTarget) {
             aimAtTarget((GameObject)targets[0]);
-            fireAtRate(fireRate);
+            fireAtRate(fireRate);//should wait to fire until the target is in front of the turret
         } else {
             newTask(newTaskTime, 3);
             doIdleTask(idleTaskId);
@@ -117,18 +117,18 @@ public abstract class AbstractTurret : MonoBehaviour
     protected virtual void doIdleTask(int task) {
         try {
             switch (task) {
-                case 0:
+                case 0: //do nothing
                     idleRotationVector = Quaternion.Euler(0, 0, 0);
                     bodySrc.clip = movingSound;
                     bodySrc.volume = Mathf.Lerp(bodySrc.volume, 0, Time.deltaTime * volumeRamping);
                     break;
-                case 1:
+                case 1: //rotate cw
                     idleRotationVector = Quaternion.Euler(0, idleRotationAmount, 0);
                     head.transform.rotation = head.transform.rotation * idleRotationVector;
                     bodySrc.clip = movingSound;
                     bodySrc.volume = Mathf.Lerp(bodySrc.volume, 1, Time.deltaTime * volumeRamping);
                     break;
-                case 2:
+                case 2: //rotate ccw
                     idleRotationVector = Quaternion.Euler(0, -idleRotationAmount, 0);
                     head.transform.rotation = head.transform.rotation * idleRotationVector;
                     bodySrc.clip = movingSound;

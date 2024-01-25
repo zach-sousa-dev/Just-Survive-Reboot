@@ -59,8 +59,10 @@ public class PlayerController : MonoBehaviour
         if (cc.isGrounded) {
             if (Input.GetKey(KeyCode.LeftShift) == !shiftInversion) {
                 movementSpeed = runningSpeed;
+                isRunning= true;//currently not used but should still be here
             } else {
                 movementSpeed = walkingSpeed;
+                isRunning= false;
             }
             move = processedInput * movementSpeed;    //multiply by movement speed
         } else {
