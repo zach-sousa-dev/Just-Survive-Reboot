@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.8106216, g: 0.64649975, b: 0.39943463, a: 1}
+  m_IndirectSpecularColor: {r: 0.8107096, g: 0.6464612, b: 0.39944792, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -13008,6 +13008,7 @@ GameObject:
   - component: {fileID: 1393715077}
   - component: {fileID: 1393715076}
   - component: {fileID: 1393715075}
+  - component: {fileID: 1393715079}
   m_Layer: 7
   m_Name: Floating Crate (1)
   m_TagString: Enemy
@@ -13197,6 +13198,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393715071}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!208 &1393715079
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393715071}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1426581282
 GameObject:
   m_ObjectHideFlags: 0
