@@ -9,12 +9,13 @@ public class TurretPlacer : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float range;
     [SerializeField] private GameObject turretPrefab;
-    [SerializeField] private GameObject turretPreview;
+    [SerializeField] private CheckIfClear turretPreview;
     [SerializeField] private GameObject player;
     [SerializeField] private AudioClip placementSound;
     [SerializeField] private AudioClip failureSound;
+    [SerializeField] private LayerMask layerMask;
     private AudioSource src;
-    private bool toggleOn = false;
+    private bool toggleOn = true;
 
     // Start is called before the first frame update
     void Start()
@@ -30,15 +31,15 @@ public class TurretPlacer : MonoBehaviour
             toggleOn = !toggleOn;
         }
 
-        turretPreview.SetActive(false);
-        if(toggleOn) {
+        turretPreview.SetVisisbility(false);
+        if (toggleOn) {
             RaycastHit hit;
-
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range)) {
-                turretPreview.SetActive(true);
+            
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range, layerMask)) {
+                turretPreview.SetVisisbility(true);
                 turretPreview.transform.position = hit.point;
                 if(Input.GetKeyDown(KeyCode.Mouse0)) {
-                    if(turretPreview.GetComponent<CheckIfClear>().IsColliding() == false) {
+                    if(!turretPreview.IsColliding()) {
                         Instantiate(turretPrefab, hit.point, turretPreview.transform.rotation);
                         src.PlayOneShot(placementSound);
                     } else {

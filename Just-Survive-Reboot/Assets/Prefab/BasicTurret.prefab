@@ -5538,7 +5538,7 @@ GameObject:
   - component: {fileID: 7261997889533558167}
   m_Layer: 9
   m_Name: BasicTurret
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5590,6 +5590,7 @@ MonoBehaviour:
   lockOnSpeed: 0.05
   detectionVolume: 0.1
   enemyLayer: Enemies
+  buildAnimationSpeed: 10
   dmg: 0.2
   fireRate: 0.5
 --- !u!82 &145801605753664470

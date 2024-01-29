@@ -500,7 +500,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -731,7 +731,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1257,7 +1257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 182578589}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309744179}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1325,7 +1325,7 @@ GameObject:
   - component: {fileID: 387147544}
   - component: {fileID: 387147546}
   - component: {fileID: 387147545}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: BasicTurretHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1892,8 +1892,8 @@ GameObject:
   - component: {fileID: 508671157}
   - component: {fileID: 508671159}
   - component: {fileID: 508671158}
-  m_Layer: 10
-  m_Name: BasicTurretFoot
+  m_Layer: 2
+  m_Name: BasicTurretFootPrev
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2428,7 +2428,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -2516,10 +2516,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10
   turretPrefab: {fileID: 8942305007734308886, guid: 8d6b721f3a0b6a34c818039e4576c49f, type: 3}
-  turretPreview: {fileID: 832517779}
+  turretPreview: {fileID: 832517785}
   player: {fileID: 1969978034}
   placementSound: {fileID: 8300000, guid: 9fc6f4d4e1b25884a8a7b26875fdc489, type: 3}
   failureSound: {fileID: 8300000, guid: 9ab4101d1052d5b439773ff9ef469637, type: 3}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 7671
 --- !u!82 &557181439
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3403,7 +3406,7 @@ Transform:
   m_GameObject: {fileID: 601836152}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.85, y: 2.3, z: 4.22}
+  m_LocalPosition: {x: 7.21, y: 1.17, z: 27.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4327,7 +4330,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -4461,9 +4464,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 832517784}
-  - component: {fileID: 832517786}
   - component: {fileID: 832517785}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: BasicTurretPreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4487,28 +4489,7 @@ Transform:
   - {fileID: 309744179}
   m_Father: {fileID: 557181437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &832517785
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832517779}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4, y: 2, z: 4}
-  m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &832517786
+--- !u!114 &832517785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4522,6 +4503,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisions: 0
   isColliding: 0
+  boxOffset: {x: 0, y: 1, z: 0}
+  checkForLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  mtrl: {fileID: 2100000, guid: 56341e0ad6f9fd442bb8e92230b1c998, type: 2}
+  good: {r: 0, g: 0.83137256, b: 1, a: 0.47058824}
+  bad: {r: 1, g: 0, b: 0, a: 0.47058824}
 --- !u!1 &840351103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4894,7 +4882,7 @@ GameObject:
   - component: {fileID: 881168709}
   - component: {fileID: 881168711}
   - component: {fileID: 881168710}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: BasicTurretGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5381,7 +5369,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1687
+    m_Bits: 5783
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: cf2df12842272d0479eaeff3e6d7c717, type: 2}
   m_TargetDisplay: 0
@@ -6321,7 +6309,7 @@ GameObject:
   - component: {fileID: 1191141639}
   - component: {fileID: 1191141641}
   - component: {fileID: 1191141640}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: BasicTurretTorso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6569,7 +6557,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -7850,7 +7838,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -9596,7 +9584,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -9797,7 +9785,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -10701,7 +10689,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1609625802}
   - component: {fileID: 1609625801}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10989,7 +10977,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -11205,7 +11193,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -11548,7 +11536,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -13087,7 +13075,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -13193,6 +13181,10 @@ PrefabInstance:
     - target: {fileID: 8942305007734308886, guid: 8d6b721f3a0b6a34c818039e4576c49f, type: 3}
       propertyPath: m_Name
       value: BasicTurret
+      objectReference: {fileID: 0}
+    - target: {fileID: 8942305007734308886, guid: 8d6b721f3a0b6a34c818039e4576c49f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
