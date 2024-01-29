@@ -32,6 +32,7 @@ public abstract class AbstractTurret : MonoBehaviour
     [SerializeField] protected float rangeRadius;
     [SerializeField] protected float lockOnSpeed;
     [SerializeField] protected float detectionVolume;
+    [SerializeField] protected string enemyLayer;
 
     [Header("Weapon Stats")]
     [SerializeField] protected float dmg;
@@ -74,7 +75,7 @@ public abstract class AbstractTurret : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy");   //this whole section is probably stupid resource instensive but its fine for now :D
         targets = new ArrayList();
         for (int i = 0; i < enemies.Length; i++) {
-            if(Vector3.Distance(transform.position, enemies[i].transform.position) <= rangeRadius) {
+            if(Vector3.Distance(transform.position, enemies[i].transform.position) <= rangeRadius && enemies[i].layer == 7) {
                 targets.Add(enemies[i]);
             }
         }
