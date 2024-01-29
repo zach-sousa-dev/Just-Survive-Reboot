@@ -1,50 +1,89 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-
-/**
- * Enemy
- * Detecs the fastest path to a target and draws a line to it
- * @version 0.1.0
- * @author Eli Wood
- */
-public class Enemy : MonoBehaviour
+public class Enemy : Pathfinder
 {
-    public Transform target;
+    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
 
-    public NavMeshAgent agent;
+    [SerializeField] private float speed;
 
-    private NavMeshPath path;
-    private float elapsed = 0.0f;
+    [SerializeField] private float damage;
+    [SerializeField] private float range;
+    [SerializeField] private float attackSpeed;//effectively attack cooldown
+    [SerializeField] private float selfStun;//freeze movement
+
+
+    protected int layerMask;
+    protected float timePassed;
 
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
-        path = new NavMeshPath();
-        elapsed = 0.0f;
+        health = maxHealth;
+        timePassed = attackSpeed; //allows immediate attack
+
+        if (selfStun > attackSpeed)
+        {
+            selfStun = attackSpeed;
+        }
+
+        layerMask = 1 << 8;
+        layerMask = ~layerMask;
     }
 
     // Update is called once per frame
-    void Update()
+    override protected void Update()
     {
+        base.Update();
 
-        agent.SetDestination(target.transform.position);
+        timePassed += Time.deltaTime;
 
-
-        elapsed += Time.deltaTime;
-        if (elapsed > 0.5f && target != null)
-        {
-            elapsed -= 0.5f;
-            NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path);
+        if (timePassed > selfStun) {
+            agent.speed = speed;
         }
-        
-        for (int i = 0; i < path.corners.Length - 1; i++) //display the path
+
+        if (Vector3.Distance(transform.position, target.transform.position) <= range)
         {
-            Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                Debug.Log("Hit");
+                Attack();
+            }
         }
-        
-        
+    }
+
+    protected void Attack()
+    {
+        if (timePassed > attackSpeed)
+        {
+            timePassed = 0f;
+
+            agent.speed = 0f;//potentially change to make the enemy lunge
+
+            
+
+            Debug.Log("attack for " + damage + " damage");
+        }
+    }
+
+    public void Hurt(float damage)
+    {
+        health -= damage;
+
+        if (health <= 0f)
+        {
+            //die
+        }
+        else
+        {
+            //make healthbar
+        }
+
+
     }
 }
