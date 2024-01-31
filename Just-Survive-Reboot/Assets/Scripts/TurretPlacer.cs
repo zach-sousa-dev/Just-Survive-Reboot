@@ -13,9 +13,10 @@ public class TurretPlacer : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private AudioClip placementSound;
     [SerializeField] private AudioClip failureSound;
+    [SerializeField] private AudioClip equipSound;
     [SerializeField] private LayerMask layerMask;
     private AudioSource src;
-    private bool toggleOn = true;
+    private bool toggleOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,9 @@ public class TurretPlacer : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.G)) {
             toggleOn = !toggleOn;
+            if(toggleOn) {
+                src.PlayOneShot(equipSound);
+            }
         }
 
         turretPreview.SetVisisbility(false);

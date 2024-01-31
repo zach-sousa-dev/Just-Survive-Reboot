@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using System;
 
 
@@ -48,6 +49,8 @@ public abstract class AbstractTurret : MonoBehaviour
     protected bool hasTarget = false;
     protected Vector3 lastNewDir;
 
+    protected NavMeshObstacle obstacle;
+
     protected Vector3 initialSize;
 
     // Start is called before the first frame update
@@ -65,6 +68,9 @@ public abstract class AbstractTurret : MonoBehaviour
 
         initialSize = transform.localScale;
         transform.localScale = Vector3.zero;
+
+        obstacle = GetComponent<NavMeshObstacle>();
+        obstacle.carving = true;
     }
 
     // Update is called once per frame
