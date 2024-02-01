@@ -21,7 +21,7 @@ public class CheckIfClear : MonoBehaviour
     void Update()
     {
         Collider[] colliders = Physics.OverlapBox(transform.position + boxOffset, transform.localScale, Quaternion.identity, checkForLayers);
-        Debug.Log(colliders.Length + " is the lengt");
+        //Debug.Log(colliders.Length + " is the lengt");
         if(colliders.Length > 0) {
             isColliding = true;
             mtrl.color = bad;
@@ -35,7 +35,7 @@ public class CheckIfClear : MonoBehaviour
         }
 
         foreach (Collider c in colliders) {
-            Debug.Log(c);
+            //Debug.Log(c);
         }
     }
 
