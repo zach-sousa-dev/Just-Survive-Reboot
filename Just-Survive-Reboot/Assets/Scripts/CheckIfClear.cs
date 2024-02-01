@@ -46,4 +46,9 @@ public class CheckIfClear : MonoBehaviour
     public void SetVisisbility(bool b) {
         visible = b;
     }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireCube(transform.position + boxOffset, transform.localScale);
+    }
+
 }
