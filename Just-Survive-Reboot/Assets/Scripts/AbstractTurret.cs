@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using System;
 
 
@@ -33,6 +34,7 @@ public abstract class AbstractTurret : MonoBehaviour
     [SerializeField] protected float lockOnSpeed;
     [SerializeField] protected float detectionVolume;
     [SerializeField] protected string enemyLayer;
+    [SerializeField] protected float buildAnimationSpeed;
 
     [Header("Weapon Stats")]
     [SerializeField] protected float dmg;
@@ -47,6 +49,10 @@ public abstract class AbstractTurret : MonoBehaviour
     protected bool hasTarget = false;
     protected Vector3 lastNewDir;
 
+    protected NavMeshObstacle obstacle;
+
+    protected Vector3 initialSize;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,11 +65,19 @@ public abstract class AbstractTurret : MonoBehaviour
         bodySrc.clip = movingSound;
         bodySrc.volume = 0;
         bodySrc.spatialBlend = 1;
+
+        initialSize = transform.localScale;
+        transform.localScale = Vector3.zero;
+
+        obstacle = GetComponent<NavMeshObstacle>();
+        obstacle.carving = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.localScale = Vector3.Lerp(transform.localScale, initialSize, Time.deltaTime * buildAnimationSpeed);
+
         if(hasTarget) {
             aimAtTarget((GameObject)targets[0]);
             fireAtRate(fireRate);//should wait to fire until the target is in front of the turret
