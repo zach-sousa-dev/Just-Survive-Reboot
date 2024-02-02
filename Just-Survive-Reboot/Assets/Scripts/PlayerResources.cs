@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+//using UnityEngine.Rendering.PostProcessing;
 
 //handles resources like health and ammo
 public class PlayerResources : MonoBehaviour
@@ -32,6 +32,7 @@ public class PlayerResources : MonoBehaviour
         if (health <= 0)
         {
             //die
+            Debug.Log("Dead");
         }
         else if (health <= maxHealth)
         {
