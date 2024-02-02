@@ -12,7 +12,7 @@ using UnityEngine.AI;
  */
 public class Pathfinder : MonoBehaviour
 {
-    public Transform target;
+    public GameObject target;
 
     public NavMeshAgent agent;
 

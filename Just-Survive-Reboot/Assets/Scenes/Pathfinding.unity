@@ -271,6 +271,7 @@ MonoBehaviour:
   player: {fileID: 330660238}
   placementSound: {fileID: 8300000, guid: 9fc6f4d4e1b25884a8a7b26875fdc489, type: 3}
   failureSound: {fileID: 8300000, guid: 9ab4101d1052d5b439773ff9ef469637, type: 3}
+  equipSound: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 7671
@@ -609,8 +610,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330660238}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.7599976, y: 3.02, z: 4.1500025}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.7599974, y: 3.02, z: 4.1500025}
   m_LocalScale: {x: 1, y: 1.7000003, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1075,7 +1076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43dbf5ab41533fa4981a6da9422b9065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 330660244}
+  target: {fileID: 330660238}
   agent: {fileID: 845850811}
   health: 100
   maxHealth: 100
@@ -1084,6 +1085,7 @@ MonoBehaviour:
   range: 2.5
   attackSpeed: 1
   selfStun: 1
+  player: {fileID: 330660245}
 --- !u!1 &916560120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,7 +2002,7 @@ SceneRoots:
   - {fileID: 2012986927}
   - {fileID: 916560124}
   - {fileID: 381610693}
-  - {fileID: 330660244}
   - {fileID: 698503172}
   - {fileID: 845850815}
   - {fileID: 1190235466}
+  - {fileID: 330660244}

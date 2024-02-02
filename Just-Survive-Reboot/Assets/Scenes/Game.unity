@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.8106216, g: 0.64649975, b: 0.39943463, a: 1}
+  m_IndirectSpecularColor: {r: 0.8107096, g: 0.6464612, b: 0.39944792, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4510,7 +4510,7 @@ GameObject:
   - component: {fileID: 601836156}
   - component: {fileID: 601836155}
   - component: {fileID: 601836154}
-  - component: {fileID: 601836153}
+  - component: {fileID: 601836159}
   m_Layer: 7
   m_Name: Capsule
   m_TagString: Enemy
@@ -4518,20 +4518,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &601836153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601836152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 682c0643a0b3a374ab51d0aa544454bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1969978038}
-  agent: {fileID: 601836154}
 --- !u!195 &601836154
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4642,6 +4628,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &601836159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601836152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43dbf5ab41533fa4981a6da9422b9065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1969978034}
+  agent: {fileID: 601836154}
+  health: 100
+  maxHealth: 100
+  speed: 5
+  damage: 5
+  range: 2.5
+  attackSpeed: 1
+  selfStun: 1
+  player: {fileID: 1969978043}
 --- !u!1 &619988993
 GameObject:
   m_ObjectHideFlags: 0
@@ -13826,6 +13834,7 @@ GameObject:
   - component: {fileID: 1969978036}
   - component: {fileID: 1969978035}
   - component: {fileID: 1969978039}
+  - component: {fileID: 1969978043}
   - component: {fileID: 1969978040}
   - component: {fileID: 1969978042}
   - component: {fileID: 1969978041}
@@ -14009,6 +14018,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1969978043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969978034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfacead032f593a49b9daab24761a52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  maxHealth: 100
 --- !u!1 &2051492306
 GameObject:
   m_ObjectHideFlags: 0
