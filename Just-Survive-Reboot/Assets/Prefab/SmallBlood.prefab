@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3420229510843368294}
   m_Layer: 0
   m_Name: SmallBlood
-  m_TagString: Untagged
+  m_TagString: Particle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

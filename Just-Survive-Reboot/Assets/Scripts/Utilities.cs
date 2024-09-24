@@ -22,5 +22,14 @@ public class Utilities : MonoBehaviour
         return (s - low1) * (high2 - low2) / (high1 - low1) + low2;
     }
 
-   
+    public static List<GameObject> FindChildrenWithTag(GameObject parent, string tag) {
+        List<GameObject> children = new List<GameObject>();
+        foreach (Transform child in parent.transform) {
+            if (child.tag == tag) {
+                children.Add(child.gameObject);
+            }
+        }
+
+        return children;
+    }
 }
