@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
+using System.Diagnostics;
 
 
 /**
@@ -59,6 +60,13 @@ public abstract class AbstractTurret : MonoBehaviour
         
     }
 
+    IEnumerator RefreshObstacle(NavMeshObstacle obstacle) {
+        yield return new WaitForEndOfFrame(); // Wait for one frame
+        obstacle.enabled = false;
+        yield return new WaitForEndOfFrame(); // Wait for one frame
+        obstacle.enabled = true;
+    }
+
     private void Awake() {
         //bodySrc = GetComponent<AudioSource>();
         bodySrc.loop = true;
@@ -71,6 +79,8 @@ public abstract class AbstractTurret : MonoBehaviour
 
         obstacle = GetComponent<NavMeshObstacle>();
         obstacle.carving = true;
+
+        StartCoroutine(RefreshObstacle(obstacle));
     }
 
     // Update is called once per frame
@@ -151,7 +161,7 @@ public abstract class AbstractTurret : MonoBehaviour
                     break;
             }
         } catch(Exception e) {
-            Debug.LogError("Task number not in range." + e);
+            UnityEngine.Debug.LogError("Task number not in range." + e);
         }
     }
 
