@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Enemy : Pathfinder
 {
-    [SerializeField] private float health;
-    [SerializeField] private float maxHealth;
-
     [SerializeField] private float speed;
 
     [SerializeField] private float damage;
     [SerializeField] private float range;
     [SerializeField] private float attackSpeed;//effectively attack cooldown
-    [SerializeField] private float selfStun;//freeze movement
+    [SerializeField] private float hitStun;//freeze movement
 
     [SerializeField] private PlayerResources player;
 
@@ -23,12 +20,11 @@ public class Enemy : Pathfinder
     // Start is called before the first frame update
     override protected void Start()
     {
-        health = maxHealth;
         timePassed = attackSpeed; //allows immediate attack
 
-        if (selfStun > attackSpeed)
+        if (hitStun > attackSpeed)
         {
-            selfStun = attackSpeed;
+            hitStun = attackSpeed;
         }
 
         layerMask = 1 << 8;
@@ -42,7 +38,7 @@ public class Enemy : Pathfinder
 
         timePassed += Time.deltaTime;
 
-        if (timePassed > selfStun) {
+        if (timePassed > hitStun) {
             agent.speed = speed;
         }
 
@@ -52,7 +48,7 @@ public class Enemy : Pathfinder
 
             if (timePassed > attackSpeed && Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow, 1);
                 //Debug.Log("Hit");
                 Attack();
             } 
@@ -84,19 +80,20 @@ public class Enemy : Pathfinder
         player.Hurt(damage);
     }
 
-    public void Hurt(float damage)
-    {
-        health -= damage;
-
-        if (health <= 0f)
-        {
-            //die
+    /**
+     * Applies modifiers to the enemy. All values are multipliers unless otherwise stated and default to do nothing. This means you can access only the field you want to change.
+     * All modifiers are multiplicative, making them additive would require storing multiplier values.
+     */
+    public void ApplyModifiers(bool death = false, float speed = 1, float damage = 1, float range = 1, float attackSpeed = 1, float hitStun = 1) {
+        if (death) {
+            Destroy(gameObject);
             return;
         }
 
-        //make healthbar
-        
-
-
+        this.speed *= speed;
+        this.damage *= damage;
+        this.range *= range;
+        this.attackSpeed *= attackSpeed;
+        this.hitStun *= hitStun;
     }
 }

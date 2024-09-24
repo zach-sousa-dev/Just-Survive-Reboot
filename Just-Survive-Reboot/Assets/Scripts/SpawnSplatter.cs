@@ -22,18 +22,25 @@ public class SpawnSplatter : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) {
-            if (Physics.Raycast(cam.transform.position, target.transform.position - cam.transform.position, out RaycastHit hit, Mathf.Infinity, layerMask)) {
-                GameObject splatter = Instantiate(smallSplatter, hit.point + (hit.normal * 0.2f), Quaternion.Euler(hit.normal));
-                splatter.transform.SetParent(target.transform);
+
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+                hit.collider.gameObject.GetComponent<EnemyLimb>().Hurt(5, hit);
             }
+
+            //if (Physics.Raycast(cam.transform.position, target.transform.Find("Torso").transform.position - cam.transform.position, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+            //    //GameObject splatter = Instantiate(smallSplatter, hit.point + (hit.normal * 0.2f), Quaternion.Euler(hit.normal));
+            //    //splatter.transform.SetParent(target.transform);
+            //    target.transform.Find("Torso").GetComponent<EnemyLimb>().Hurt(5, hit);
+            //}
         }
         
 
-        if (Input.GetMouseButtonDown(1)) {
-            if (Physics.Raycast(cam.transform.position, target.transform.Find("Head").transform.position - cam.transform.position, out RaycastHit hit, Mathf.Infinity, layerMask)) {
-                GameObject splatter = Instantiate(bigSplatter, hit.point + (hit.normal * 0.2f), Quaternion.Euler(hit.normal));
-                splatter.transform.SetParent(target.transform);
-            }
-        }
+        //if (Input.GetMouseButtonDown(1)) {
+        //    if (Physics.Raycast(cam.transform.position, target.transform.Find("Head").transform.position - cam.transform.position, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+        //        //GameObject splatter = Instantiate(bigSplatter, hit.point + (hit.normal * 0.2f), Quaternion.Euler(hit.normal));
+        //        //splatter.transform.SetParent(target.transform);
+        //        target.transform.Find("Head").GetComponent<EnemyLimb>().Hurt(5, hit);
+        //    }
+        //}
     }
 }

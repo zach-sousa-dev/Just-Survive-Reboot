@@ -21,4 +21,15 @@ public class Utilities : MonoBehaviour
     public static float map(float s, float low1, float high1, float low2, float high2) {
         return (s - low1) * (high2 - low2) / (high1 - low1) + low2;
     }
+
+    public static List<GameObject> FindChildrenWithTag(GameObject parent, string tag) {
+        List<GameObject> children = new List<GameObject>();
+        foreach (Transform child in parent.transform) {
+            if (child.tag == tag) {
+                children.Add(child.gameObject);
+            }
+        }
+
+        return children;
+    }
 }
