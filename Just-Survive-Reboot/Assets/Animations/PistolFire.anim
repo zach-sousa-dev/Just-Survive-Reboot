@@ -124,7 +124,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -0.21709476, y: 0.014704764, z: 0.3958423}
+        value: {x: -0.162, y: 0.014, z: 0.402}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -133,16 +133,16 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.05
-        value: {x: 0.204, y: 0.013, z: 0.452}
-        inSlope: {x: 5.0531373, y: -0.020457163, z: 0.67389214}
+        value: {x: 0.197, y: 0.013, z: 0.45}
+        inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
-        weightedMode: 3
+        weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.8333333
-        value: {x: -0.21709476, y: 0.014704764, z: 0.3958423}
+        value: {x: -0.162, y: 0.014, z: 0.402}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -151,7 +151,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 1.4166666
-        value: {x: -0.21709476, y: 0.014704764, z: 0.3958423}
+        value: {x: -0.162, y: 0.014, z: 0.402}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -161,7 +161,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Main Camera/PistolParent/StandardPistol/Slide
+    path: Main Camera/PistolParent/StandardPistol/Pistol/Slide
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -182,7 +182,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 717821524
+      path: 1884725391
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -569,7 +569,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.21709476
+        value: -0.162
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -578,16 +578,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.204
-        inSlope: 5.0531373
+        value: 0.197
+        inSlope: 0
         outSlope: 0
-        tangentMode: 1
-        weightedMode: 3
+        tangentMode: 136
+        weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8333333
-        value: -0.21709476
+        value: -0.162
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -596,7 +596,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: -0.21709476
+        value: -0.162
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -607,7 +607,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Main Camera/PistolParent/StandardPistol/Slide
+    path: Main Camera/PistolParent/StandardPistol/Pistol/Slide
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -617,7 +617,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.014704764
+        value: 0.014
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -627,15 +627,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.05
         value: 0.013
-        inSlope: -0.020457163
+        inSlope: 0
         outSlope: 0
-        tangentMode: 1
-        weightedMode: 3
+        tangentMode: 136
+        weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8333333
-        value: 0.014704764
+        value: 0.014
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -644,7 +644,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: 0.014704764
+        value: 0.014
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -655,7 +655,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Main Camera/PistolParent/StandardPistol/Slide
+    path: Main Camera/PistolParent/StandardPistol/Pistol/Slide
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -665,7 +665,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.3958423
+        value: 0.402
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -674,16 +674,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.452
-        inSlope: 0.67389214
+        value: 0.45
+        inSlope: 0
         outSlope: 0
-        tangentMode: 1
-        weightedMode: 3
+        tangentMode: 136
+        weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8333333
-        value: 0.3958423
+        value: 0.402
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -692,7 +692,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: 0.3958423
+        value: 0.402
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -703,7 +703,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Main Camera/PistolParent/StandardPistol/Slide
+    path: Main Camera/PistolParent/StandardPistol/Pistol/Slide
     classID: 4
     script: {fileID: 0}
     flags: 0

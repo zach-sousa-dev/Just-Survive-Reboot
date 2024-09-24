@@ -80,6 +80,9 @@ public class Weapon : MonoBehaviour
         {
             Shoot();
             bufferedShot = false;
+        } else if(currentAmmo < 1)
+        {
+            audioSrc.PlayOneShot(dryFireSound);
         }
     }
 
