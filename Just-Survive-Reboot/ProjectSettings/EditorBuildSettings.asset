@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/ZachStagingGame.unity
+    guid: 63790d621449a4e46a74a22c6c494fba
   m_configObjects: {}
