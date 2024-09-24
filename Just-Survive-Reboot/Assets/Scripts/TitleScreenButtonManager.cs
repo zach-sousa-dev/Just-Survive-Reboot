@@ -66,7 +66,7 @@ public class TitleScreenButtonManager : MonoBehaviour
      * Loads the "Game" scene
      */
     void PlayGame() {
-        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        SceneManager.LoadScene("ZachStagingGame", LoadSceneMode.Single);
     }
 
     /**
