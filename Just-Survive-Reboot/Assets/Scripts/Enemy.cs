@@ -91,11 +91,11 @@ public class Enemy : Pathfinder
         if (health <= 0f)
         {
             //die
+            return;
         }
-        else
-        {
-            //make healthbar
-        }
+
+        //make healthbar
+        
 
 
     }
