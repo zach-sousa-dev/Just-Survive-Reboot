@@ -5,49 +5,49 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [field: SerializeField] private string name { get; set; }
+    [field: SerializeField] protected string name { get; set; }
 
     [field: Header("Rates and Timings")]
-    [field: SerializeField] private float fireRateDelay { get; set; }
-    [field: SerializeField] private float reloadTime { get; set; }
+    [field: SerializeField] protected float fireRateDelay { get; set; }
+    [field: SerializeField] protected float reloadTime { get; set; }
 
     [field: Header("Ammo")]
-    [field: SerializeField] private int maxAmmo { get; set; }
-    [field: SerializeField] private int dryAmmoThreshold { get; set; }
-    [field: SerializeField] private int currentAmmo { get; set; }
-    [field: SerializeField] private int reserveAmmo { get; set; }
+    [field: SerializeField] protected int maxAmmo { get; set; }
+    [field: SerializeField] protected int dryAmmoThreshold { get; set; }
+    [field: SerializeField] protected int currentAmmo { get; set; }
+    [field: SerializeField] protected int reserveAmmo { get; set; }
 
     [field: Header("Handling")]
-    [field: SerializeField] private float accuracy { get; set; }
-    [field: SerializeField] private float recoil { get; set; }
+    [field: SerializeField] protected float accuracy { get; set; }
+    [field: SerializeField] protected float recoil { get; set; }
 
     [field: Header("Capability")]
-    [field: SerializeField] private float maxRange { get; set; }
-    [field: SerializeField] private float damage { get; set; }
+    [field: SerializeField] protected float maxRange { get; set; }
+    [field: SerializeField] protected float damage { get; set; }
 
     [field: Header("Object References")]
-    [field: SerializeField] private Camera cam { get; set; }
-    [field: SerializeField] private LayerMask ignoreMask { get; set; }
-    [field: SerializeField] private GameObject weaponModel { get; set; }
-    [field: SerializeField] private Animator animator { get; set; }
-    [field: SerializeField] private AudioSource audioSrc { get; set; }
+    [field: SerializeField] protected Camera cam { get; set; }
+    [field: SerializeField] protected LayerMask layerMask { get; set; }
+    [field: SerializeField] protected GameObject weaponModel { get; set; }
+    [field: SerializeField] protected Animator animator { get; set; }
+    [field: SerializeField] protected AudioSource audioSrc { get; set; }
 
     [field: Header("Animation States")]
-    [field: SerializeField] private string fireAnimation { get; set; }
-    [field: SerializeField] private string emptyAnimation { get; set; }
-    [field: SerializeField] private string idleAnimation { get; set; }
-    [field: SerializeField] private string reloadAnimation { get; set; }
-    [field: SerializeField] private string equipAnimation { get; set; }
+    [field: SerializeField] protected string fireAnimation { get; set; }
+    [field: SerializeField] protected string emptyAnimation { get; set; }
+    [field: SerializeField] protected string idleAnimation { get; set; }
+    [field: SerializeField] protected string reloadAnimation { get; set; }
+    [field: SerializeField] protected string equipAnimation { get; set; }
 
     [field: Header("Sounds")]
-    [field: SerializeField] private AudioClip fireSound { get; set; }
-    [field: SerializeField] private AudioClip noAmmoSound { get; set; }
-    [field: SerializeField] private AudioClip dryFireSound { get; set; }
-    [field: SerializeField] private AudioClip reloadSound { get; set; }
-    [field: SerializeField] private AudioClip equipSound { get; set; }
+    [field: SerializeField] protected AudioClip fireSound { get; set; }
+    [field: SerializeField] protected AudioClip noAmmoSound { get; set; }
+    [field: SerializeField] protected AudioClip dryFireSound { get; set; }
+    [field: SerializeField] protected AudioClip reloadSound { get; set; }
+    [field: SerializeField] protected AudioClip equipSound { get; set; }
 
     //  States
-    private bool canFire = true;
+    protected bool canFire = true;
 
     private void Update()
     {
@@ -58,21 +58,38 @@ public class Weapon : MonoBehaviour
         Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.green);
     }
 
-    private void Shoot()
+    protected virtual void Shoot()
     {
         if(currentAmmo > 0 && canFire)
         {
             StartCoroutine(FireRateRoutine());
-            RaycastHit hit;
 
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, maxRange))
-            {
-                Debug.Log(hit.collider.gameObject.name);
-            }
+            ShootBullet(cam.transform.position, cam.transform.forward);
+
+            //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, maxRange, layerMask))
+            //{
+            //    //Debug.Log(hit.collider.gameObject.name);
+
+            //    EnemyLimb limb = hit.collider.gameObject.GetComponent<EnemyLimb>();
+            //    if (limb != null) {
+            //        limb.Hurt(damage, hit);
+            //    }
+            //}
 
             currentAmmo--;
             audioSrc.PlayOneShot(fireSound);
             animator.Play(fireAnimation, -1, 0f);
+        }
+    }
+
+    protected void ShootBullet(Vector3 position, Vector3 direction) {
+        if (Physics.Raycast(position, direction, out RaycastHit hit, maxRange, layerMask)) {
+            //Debug.Log(hit.collider.gameObject.name);
+
+            EnemyLimb limb = hit.collider.gameObject.GetComponent<EnemyLimb>();
+            if (limb != null) {
+                limb.Hurt(damage, hit);
+            }
         }
     }
 
@@ -96,7 +113,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private IEnumerator FireRateRoutine()
+    protected IEnumerator FireRateRoutine()
     {
         canFire = false;
         yield return new WaitForSeconds(fireRateDelay);

@@ -5583,6 +5583,9 @@ MonoBehaviour:
   bodySrc: {fileID: 145801605753664470}
   gunSrc: {fileID: 340542461645400861}
   headSrc: {fileID: 2083241312522175646}
+  <layerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 128
   idleRotationAmount: 0.5
   volumeRamping: 10
   newTaskTime: 0.5
@@ -5591,7 +5594,7 @@ MonoBehaviour:
   detectionVolume: 0.1
   enemyLayer: Enemies
   buildAnimationSpeed: 10
-  dmg: 0.2
+  dmg: 2
   fireRate: 0.5
 --- !u!82 &145801605753664470
 AudioSource:

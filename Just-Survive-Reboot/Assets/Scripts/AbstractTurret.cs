@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 
 /**
@@ -26,6 +27,7 @@ public abstract class AbstractTurret : MonoBehaviour
     [SerializeField] protected AudioSource bodySrc;
     [SerializeField] protected AudioSource gunSrc;
     [SerializeField] protected AudioSource headSrc;
+    [field: SerializeField] private LayerMask layerMask { get; set; }
 
     [Header("Variables")]
     [SerializeField] protected float idleRotationAmount;
@@ -88,16 +90,9 @@ public abstract class AbstractTurret : MonoBehaviour
     {
         transform.localScale = Vector3.Lerp(transform.localScale, initialSize, Time.deltaTime * buildAnimationSpeed);
 
-        if(hasTarget) {
-            aimAtTarget((GameObject)targets[0]);
-            fireAtRate(fireRate);//should wait to fire until the target is in front of the turret
-        } else {
-            newTask(newTaskTime, 3);
-            doIdleTask(idleTaskId);
-        }
-
         enemies = GameObject.FindGameObjectsWithTag("Enemy");   //this whole section is probably stupid resource instensive but its fine for now :D
         targets = new ArrayList();
+
         for (int i = 0; i < enemies.Length; i++) {
             if(Vector3.Distance(transform.position, enemies[i].transform.position) <= rangeRadius && enemies[i].layer == 7) {
                 targets.Add(enemies[i]);
@@ -115,6 +110,15 @@ public abstract class AbstractTurret : MonoBehaviour
             headSrc.PlayOneShot(deactivateSound);
             hasTarget = false;
             //bodySrc.Play();
+        }
+
+        if (hasTarget) {
+            aimAtTarget((GameObject)targets[0]);
+            fireAtRate(fireRate);//should wait to fire until the target is in front of the turret
+        }
+        else {
+            newTask(newTaskTime, 3);
+            doIdleTask(idleTaskId);
         }
     }
 
@@ -137,6 +141,10 @@ public abstract class AbstractTurret : MonoBehaviour
     protected virtual void fire() {
         muzzleFlash.Play();
         gunSrc.PlayOneShot(shotSound, 1);
+
+        if (Physics.Raycast(head.transform.position, head.transform.forward, out RaycastHit hit, rangeRadius, layerMask)) {
+            hit.collider.gameObject.GetComponent<EnemyLimb>().Hurt(dmg, hit);
+        }
     }
 
     protected virtual void doIdleTask(int task) {
