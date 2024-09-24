@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
 
     [field: Header("Object References")]
     [field: SerializeField] private Camera cam { get; set; }
-    [field: SerializeField] private LayerMask ignoreMask { get; set; }
+    [field: SerializeField] private LayerMask layerMask { get; set; }
     [field: SerializeField] private GameObject weaponModel { get; set; }
     [field: SerializeField] private Animator animator { get; set; }
     [field: SerializeField] private AudioSource audioSrc { get; set; }
@@ -47,45 +47,77 @@ public class Weapon : MonoBehaviour
     [field: SerializeField] private AudioClip equipSound { get; set; }
 
     //  States
-    private bool canFire = true;
+    [SerializeField] private bool canFire = true;
+    [SerializeField] private bool canReload = true;
+    [SerializeField] private bool isReloading = false;
+    [SerializeField] private bool bufferedShot = false;
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) || bufferedShot)
         {
-            Shoot();
+            RequestShoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
         }
         Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.green);
     }
 
+    private void RequestShoot()
+    {
+        if(currentAmmo > 0 && canFire && !bufferedShot)
+        {
+            Shoot();
+        } 
+        else if(currentAmmo > 0 && !canFire && !isReloading)
+        {
+            bufferedShot = true;
+        }
+        else if(bufferedShot && canFire && !isReloading && currentAmmo > 0)
+        {
+            Shoot();
+            bufferedShot = false;
+        }
+    }
+
     private void Shoot()
     {
-        if(currentAmmo > 0 && canFire)
+        StartCoroutine(FireRateRoutine());
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, maxRange, layerMask))
         {
-            StartCoroutine(FireRateRoutine());
-            RaycastHit hit;
-
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, maxRange))
-            {
-                Debug.Log(hit.collider.gameObject.name);
-            }
-
-            currentAmmo--;
-            audioSrc.PlayOneShot(fireSound);
-            animator.Play(fireAnimation, -1, 0f);
+            Debug.Log(hit.collider.gameObject.name);
         }
+
+        currentAmmo--;
+        audioSrc.PlayOneShot(fireSound);
+        animator.Play(fireAnimation, -1, 0f);
     }
 
     private void Reload()
     {
-        StartCoroutine(ReloadRoutine());
+        if(currentAmmo < maxAmmo && canReload)
+        {
+            StartCoroutine(ReloadRoutine());
+            audioSrc.PlayOneShot(reloadSound);
+            animator.Play(reloadAnimation, -1, 0f);
+        }
     }
 
     private IEnumerator ReloadRoutine()
     {
+        canFire = false;
+        canReload = false;
+        isReloading = true;
         //animator.Play(reloadAnimation);
         yield return new WaitForSeconds(reloadTime);
-        if(reserveAmmo < maxAmmo)
+        canFire = true;
+        canReload = true;
+        isReloading = false;
+        if (reserveAmmo < maxAmmo)
         {
             currentAmmo = reserveAmmo;
             reserveAmmo = 0;
@@ -99,7 +131,9 @@ public class Weapon : MonoBehaviour
     private IEnumerator FireRateRoutine()
     {
         canFire = false;
+        canReload = false;
         yield return new WaitForSeconds(fireRateDelay);
         canFire = true;
+        canReload = true;
     }
 }

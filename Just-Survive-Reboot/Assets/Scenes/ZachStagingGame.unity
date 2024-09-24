@@ -5027,7 +5027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &1004840836
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12216,6 +12216,58 @@ PrefabInstance:
     - target: {fileID: 448794147248052122, guid: 109589286257ca44298e701d90def343, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768502210003277116, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -19.31912
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768502210003277116, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.243145
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768502210003277116, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0002377024
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768502210003277116, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.9978185
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <maxAmmo>k__BackingField
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <ignoreMask>k__BackingField
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <reloadTime>k__BackingField
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <currentAmmo>k__BackingField
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <reloadSound>k__BackingField
+      value: 
+      objectReference: {fileID: 8300000, guid: 206522df2a9428a4e9ece7200806ef81, type: 3}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <fireRateDelay>k__BackingField
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <reloadAnimation>k__BackingField
+      value: PistolReload
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <layerMask>k__BackingField.m_Bits
+      value: 16119
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162110003230702202, guid: 109589286257ca44298e701d90def343, type: 3}
+      propertyPath: <ignoreMask>k__BackingField.m_Bits
+      value: 16119
       objectReference: {fileID: 0}
     - target: {fileID: 8805479433078404707, guid: 109589286257ca44298e701d90def343, type: 3}
       propertyPath: m_Name
