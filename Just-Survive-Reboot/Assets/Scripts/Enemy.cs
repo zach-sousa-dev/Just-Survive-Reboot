@@ -80,7 +80,6 @@ public class Enemy : Pathfinder
         player.Hurt(damage);
     }
 
-<<<<<<< Updated upstream
     /**
      * Applies modifiers to the enemy. All values are multipliers unless otherwise stated and default to do nothing. This means you can access only the field you want to change.
      * All modifiers are multiplicative, making them additive would require storing multiplier values.
@@ -90,20 +89,6 @@ public class Enemy : Pathfinder
             Destroy(gameObject);
             return;
         }
-=======
-    public void Hurt(float damage)
-    {
-        health -= damage;
-
-        if (health <= 0f)
-        {
-            //die
-            return;
-        }
-
-        //make healthbar
-        
->>>>>>> Stashed changes
 
         this.speed *= speed;
         this.damage *= damage;
