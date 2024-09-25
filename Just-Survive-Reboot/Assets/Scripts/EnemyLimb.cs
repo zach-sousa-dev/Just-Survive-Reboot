@@ -37,7 +37,7 @@ public class EnemyLimb : MonoBehaviour
             return;
         }
 
-        SpawnSplatter(hitEffect, hit.point, Quaternion.Euler(hit.normal));
+        SpawnSplatter(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
 
         DamageEffect(parent);
     }
@@ -60,7 +60,7 @@ public class EnemyLimb : MonoBehaviour
     }
 
     private void OnDestroy() {
-        SpawnSplatter(destructionEffect, transform.position, Quaternion.Euler(transform.forward), null);
+        SpawnSplatter(destructionEffect, transform.position, Quaternion.LookRotation(transform.forward), null);
         List<GameObject> particles = Utilities.FindChildrenWithTag(gameObject, "Particle");
         foreach (GameObject particle in particles) {
             particle.transform.SetParent(null, true);

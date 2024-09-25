@@ -31,6 +31,7 @@ public class Weapon : MonoBehaviour
     [field: SerializeField] protected GameObject weaponModel { get; set; }
     [field: SerializeField] protected Animator animator { get; set; }
     [field: SerializeField] protected AudioSource audioSrc { get; set; }
+    [field: SerializeField] protected GameObject wallHitEffect { get; set; }
 
     [field: Header("Animation States")]
     [field: SerializeField] protected string fireAnimation { get; set; }
@@ -86,9 +87,17 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(position, direction, out RaycastHit hit, maxRange, layerMask)) {
             //Debug.Log(hit.collider.gameObject.name);
 
-            EnemyLimb limb = hit.collider.gameObject.GetComponent<EnemyLimb>();
-            if (limb != null) {
-                limb.Hurt(damage, hit);
+            GameObject obj = hit.collider.gameObject;
+
+            if (obj.layer == 7) {
+                EnemyLimb limb = obj.GetComponent<EnemyLimb>();
+                if (limb != null) {
+                    limb.Hurt(damage, hit);
+                }
+            }
+
+            if (obj.layer == 14) {
+                Instantiate(wallHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
     }
