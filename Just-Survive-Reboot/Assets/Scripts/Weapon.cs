@@ -31,6 +31,7 @@ public class Weapon : MonoBehaviour
     [field: SerializeField] private GameObject weaponModel { get; set; }
     [field: SerializeField] private Animator animator { get; set; }
     [field: SerializeField] private AudioSource audioSrc { get; set; }
+    [field: SerializeField] private ParticleSystem muzzleFlash { get; set; }
 
     [field: Header("Animation States")]
     [field: SerializeField] private string fireAnimation { get; set; }
@@ -98,6 +99,7 @@ public class Weapon : MonoBehaviour
         currentAmmo--;
         audioSrc.PlayOneShot(fireSound);
         animator.Play(fireAnimation, -1, 0f);
+        muzzleFlash.Play();
     }
 
     private void Reload()
