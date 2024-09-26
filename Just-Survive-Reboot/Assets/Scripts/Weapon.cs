@@ -2,56 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Weapon : MonoBehaviour
 {
-    [field: SerializeField] private string name { get; set; }
+    [field: SerializeField] private string Name { get; set; }
 
     [field: Header("Rates and Timings")]
-    [field: SerializeField] private float fireRateDelay { get; set; }
-    [field: SerializeField] private float reloadTime { get; set; }
+    [field: SerializeField] private float FireRateDelay { get; set; }
+    [field: SerializeField] private float ReloadTime { get; set; }
 
     [field: Header("Ammo")]
-    [field: SerializeField] private int maxAmmo { get; set; }
-    [field: SerializeField] private int dryAmmoThreshold { get; set; }
-    [field: SerializeField] private int currentAmmo { get; set; }
-    [field: SerializeField] private int reserveAmmo { get; set; }
+    [field: SerializeField] private int MaxAmmo { get; set; }
+    [field: SerializeField] private int DryAmmoThreshold { get; set; }
+    [field: SerializeField] private int CurrentAmmo { get; set; }
+    [field: SerializeField] private int ReserveAmmo { get; set; }
 
     [field: Header("Handling")]
-    [field: SerializeField] private float accuracy { get; set; }
-    [field: SerializeField] private float recoil { get; set; }
+    [field: SerializeField] private float Accuracy { get; set; }
+
+    [SerializeField] private AnimationCurve RecoilFunction;
+    [field: SerializeField] private float RecoilMultiplier { get; set; }
+    private float currentRecoilTimeStamp = 0;
+    private float maxRecoilTimeStamp;   //  set in Start
+    private float minRecoilTimeStamp;   //  set in Start
+    private Coroutine recoilRecoveryRoutineInstance;
+    [field: SerializeField] private float RecoilRecoveryTime { get; set; }
 
     [field: Header("Capability")]
-    [field: SerializeField] private float maxRange { get; set; }
-    [field: SerializeField] private float damage { get; set; }
+    [field: SerializeField] private float MaxRange { get; set; }
+    [field: SerializeField] private float Damage { get; set; }
 
     [field: Header("Object References")]
-    [field: SerializeField] private Camera cam { get; set; }
-    [field: SerializeField] private LayerMask layerMask { get; set; }
-    [field: SerializeField] private GameObject weaponModel { get; set; }
-    [field: SerializeField] private Animator animator { get; set; }
-    [field: SerializeField] private AudioSource audioSrc { get; set; }
-    [field: SerializeField] private ParticleSystem muzzleFlash { get; set; }
+    [field: SerializeField] private Camera Cam { get; set; }
+    [field: SerializeField] private LayerMask LayerMask { get; set; }
+    [field: SerializeField] private GameObject WeaponModel { get; set; }
+    [field: SerializeField] private Animator Animator { get; set; }
+    [field: SerializeField] private AudioSource AudioSrc { get; set; }
+    [field: SerializeField] private ParticleSystem MuzzleFlash { get; set; }
+    [field: SerializeField] private PlayerController PlayerController { get; set; }
 
     [field: Header("Animation States")]
-    [field: SerializeField] private string fireAnimation { get; set; }
-    [field: SerializeField] private string emptyAnimation { get; set; }
-    [field: SerializeField] private string idleAnimation { get; set; }
-    [field: SerializeField] private string reloadAnimation { get; set; }
-    [field: SerializeField] private string equipAnimation { get; set; }
+    [field: SerializeField] private string FireAnimation { get; set; }
+    [field: SerializeField] private string EmptyAnimation { get; set; }
+    [field: SerializeField] private string IdleAnimation { get; set; }
+    [field: SerializeField] private string ReloadAnimation { get; set; }
+    [field: SerializeField] private string EquipAnimation { get; set; }
 
     [field: Header("Sounds")]
-    [field: SerializeField] private AudioClip fireSound { get; set; }
-    [field: SerializeField] private AudioClip noAmmoSound { get; set; }
-    [field: SerializeField] private AudioClip dryFireSound { get; set; }
-    [field: SerializeField] private AudioClip reloadSound { get; set; }
-    [field: SerializeField] private AudioClip equipSound { get; set; }
-
+    [field: SerializeField] private AudioClip FireSound { get; set; }
+    [field: SerializeField] private AudioClip NoAmmoSound { get; set; }
+    [field: SerializeField] private AudioClip DryFireSound { get; set; }
+    [field: SerializeField] private AudioClip ReloadSound { get; set; }
+    [field: SerializeField] private AudioClip EquipSound { get; set; }
+    
     //  States
     [SerializeField] private bool canFire = true;
     [SerializeField] private bool canReload = true;
     [SerializeField] private bool isReloading = false;
     [SerializeField] private bool bufferedShot = false;
+
+    private void Start()
+    {
+        minRecoilTimeStamp = RecoilFunction.keys[0].time;
+        maxRecoilTimeStamp = RecoilFunction.keys[RecoilFunction.keys.Length-1].time;
+    }
 
     private void Update()
     {
@@ -64,26 +79,23 @@ public class Weapon : MonoBehaviour
         {
             Reload();
         }
-        Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.green);
+        Debug.DrawRay(Cam.transform.position, Cam.transform.forward, Color.green);
     }
 
     private void RequestShoot()
     {
-        if(currentAmmo > 0 && canFire && !bufferedShot)
+        if(canFire && !bufferedShot)
         {
             Shoot();
         } 
-        else if(currentAmmo > 0 && !canFire && !isReloading)
+        else if(CurrentAmmo > 0 && !canFire && !isReloading)
         {
             bufferedShot = true;
         }
-        else if(bufferedShot && canFire && !isReloading && currentAmmo > 0)
+        else if(bufferedShot && canFire && !isReloading)
         {
             Shoot();
             bufferedShot = false;
-        } else if(currentAmmo < 1)
-        {
-            audioSrc.PlayOneShot(dryFireSound);
         }
     }
 
@@ -91,26 +103,78 @@ public class Weapon : MonoBehaviour
     {
         StartCoroutine(FireRateRoutine());
 
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, maxRange, layerMask))
+        if (Physics.Raycast(Cam.transform.position, Cam.transform.forward, out RaycastHit hit, MaxRange, LayerMask))
         {
             Debug.Log(hit.collider.gameObject.name);
         }
 
-        currentAmmo--;
-        audioSrc.PlayOneShot(fireSound);
-        animator.Play(fireAnimation, -1, 0f);
-        muzzleFlash.Play();
+        
+        
+
+        if (CurrentAmmo != 0)
+        {
+            CurrentAmmo--;
+            DoRecoil();
+            Animator.Play(FireAnimation, -1, 0f);
+            MuzzleFlash.Play();
+
+            if (CurrentAmmo > DryAmmoThreshold)
+            {
+                AudioSrc.PlayOneShot(FireSound);
+            }
+            else
+            {
+                AudioSrc.PlayOneShot(DryFireSound);
+            }
+        } else
+        {
+            AudioSrc.PlayOneShot(NoAmmoSound);
+        }
+        
+    }
+
+    private void DoRecoil()
+    {
+        float recoilIncrement = RecoilFunction.Evaluate(currentRecoilTimeStamp) * RecoilMultiplier;
+
+        if(recoilRecoveryRoutineInstance != null)
+        {
+            StopCoroutine(recoilRecoveryRoutineInstance);
+        }
+
+        PlayerController.RecoilX -= recoilIncrement;
+
+        //Debug.Log("RECOIL TIME STAMP: " + currentRecoilTimeStamp);
+        //Debug.Log("RECOIL EVAL: " + recoilIncrement);
+
+        currentRecoilTimeStamp += maxRecoilTimeStamp / MaxAmmo;
+
+        recoilRecoveryRoutineInstance = StartCoroutine(RecoilRecovery(maxRecoilTimeStamp / MaxAmmo));
+    }
+
+    private IEnumerator RecoilRecovery(float decrement)
+    {
+        if (!(currentRecoilTimeStamp <= 0))
+        {
+            //Debug.Log("entered");
+            yield return new WaitForSeconds(RecoilRecoveryTime + FireRateDelay);
+            currentRecoilTimeStamp -= decrement;
+            //Debug.Log("RECOIL DECREMENTED");
+            recoilRecoveryRoutineInstance = StartCoroutine(RecoilRecovery(maxRecoilTimeStamp / MaxAmmo));
+        }
     }
 
     private void Reload()
     {
-        if(currentAmmo < maxAmmo && canReload)
+        if(CurrentAmmo < MaxAmmo && canReload)
         {
             StartCoroutine(ReloadRoutine());
-            audioSrc.PlayOneShot(reloadSound);
-            animator.Play(reloadAnimation, -1, 0f);
+            currentRecoilTimeStamp = minRecoilTimeStamp;
+            AudioSrc.PlayOneShot(ReloadSound);
+            Animator.Play(ReloadAnimation, -1, 0f);
         }
     }
+
 
     private IEnumerator ReloadRoutine()
     {
@@ -118,18 +182,18 @@ public class Weapon : MonoBehaviour
         canReload = false;
         isReloading = true;
         //animator.Play(reloadAnimation);
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(ReloadTime);
         canFire = true;
         canReload = true;
         isReloading = false;
-        if (reserveAmmo < maxAmmo)
+        if (ReserveAmmo < MaxAmmo)
         {
-            currentAmmo = reserveAmmo;
-            reserveAmmo = 0;
+            CurrentAmmo = ReserveAmmo;
+            ReserveAmmo = 0;
         } else
         {
-            currentAmmo = maxAmmo;
-            reserveAmmo -= maxAmmo;
+            CurrentAmmo = MaxAmmo;
+            ReserveAmmo -= MaxAmmo;
         }
     }
 
@@ -137,7 +201,7 @@ public class Weapon : MonoBehaviour
     {
         canFire = false;
         canReload = false;
-        yield return new WaitForSeconds(fireRateDelay);
+        yield return new WaitForSeconds(FireRateDelay);
         canFire = true;
         canReload = true;
     }

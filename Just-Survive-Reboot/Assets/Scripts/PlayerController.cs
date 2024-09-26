@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,7 +10,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 rawInput = Vector3.zero;
     private Vector3 processedInput = Vector3.zero;
 
-    private float mouseSens = 1f;
+    [Header("Control")]
+    [SerializeField] private float mouseSens = 1f;
+    [SerializeField] private float recoilLerpTime = 1f;
+    [SerializeField] private float recoilEndpointTolerance = 0.1f;
 
     [Header("Ground Control")]
     [SerializeField] private float runningSpeed = 10f;
@@ -26,8 +30,14 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam;
 
-    private float rotationX;
+    public float RotationX { get; set; }
+    [field: SerializeField] public float RecoilX { get; set; }  //  the target recoil rotation
+    [field: SerializeField] public float RecoilRotationX { get; set; }  //  the actual recoil rotation (lerped value)
+    float t = 0;
+    private float recoilStartTime;
+
     private float lookXLimit = 90f;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -71,9 +81,31 @@ public class PlayerController : MonoBehaviour
 
 
 
-        rotationX += -Input.GetAxis("Mouse Y") * mouseSens;                                             //rotation for the camera based on Mouse Y, * sensitivity
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);                                    //avoid flipping >180 degrees
-        cam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);                                //do camera rotation
+        RotationX += -Input.GetAxis("Mouse Y") * mouseSens; //  rotation for the camera based on Mouse Y, * sensitivity
+
+        //  VVV RECOIL VVV
+        RotationX += RecoilRotationX * Time.deltaTime;  //  rotation for the camera based on lerped recoil
+        if (RecoilX != 0)   //  this means that there is currently recoil being applied to the camera
+        {
+            if(recoilStartTime == -1f)  //  if this is the first frame of recoil
+            {
+                recoilStartTime = Time.time;    //  reset the initial time so we can start tracking the elapsed, which should only last recoilLerpTime seconds
+            }
+
+            float elapsedTime = Time.time - recoilStartTime;  
+            t = Mathf.Clamp01(elapsedTime / recoilLerpTime);    //  map t (interpolator) accordingly to the elapsedTime
+            RecoilRotationX = Mathf.Lerp(RecoilRotationX, RecoilX, t);  //  apply the lerp
+
+            if (t >= 0.99f)     //  this shot of recoil has completed, reset values
+            {
+                RecoilRotationX = 0;
+                RecoilX = 0;
+                recoilStartTime = -1f; //   using -1f to check if its the first frame of recoil next time, could and probably should be a bool flag
+            }
+        }
+
+        RotationX = Mathf.Clamp(RotationX, -lookXLimit, lookXLimit);                                    //avoid flipping >180 degrees
+        cam.transform.localRotation = Quaternion.Euler(RotationX, 0, 0);                                //do camera rotation
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * mouseSens, 0);             //rotate player based on Mouse X
 
 

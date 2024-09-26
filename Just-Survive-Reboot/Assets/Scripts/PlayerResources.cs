@@ -27,12 +27,12 @@ public class PlayerResources : MonoBehaviour
     {
         health -= damage;
 
-        Debug.Log(health);
+        //Debug.Log(health);
 
         if (health <= 0)
         {
             //die
-            Debug.Log("Dead");
+            //Debug.Log("Dead");
         }
         else if (health <= maxHealth)
         {
