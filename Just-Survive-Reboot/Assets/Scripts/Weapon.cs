@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
 
     [field: Header("Handling")]
     [field: SerializeField] private float Accuracy { get; set; }
+    [field: SerializeField] private float ADSFOVMultiplier { get; set; }
 
     [SerializeField] private AnimationCurve RecoilFunction;
     [field: SerializeField] private float RecoilMultiplier { get; set; }
@@ -32,6 +33,7 @@ public class Weapon : MonoBehaviour
     [field: Header("Capability")]
     [field: SerializeField] private float MaxRange { get; set; }
     [field: SerializeField] private float Damage { get; set; }
+    [field: SerializeField] private bool isFullAuto {  get; set; }
 
     [field: Header("Object References")]
     [field: SerializeField] private Camera Cam { get; set; }
@@ -41,13 +43,14 @@ public class Weapon : MonoBehaviour
     [field: SerializeField] private AudioSource AudioSrc { get; set; }
     [field: SerializeField] private ParticleSystem MuzzleFlash { get; set; }
     [field: SerializeField] private PlayerController PlayerController { get; set; }
+    [field: SerializeField] private Transform TracerStartPosition { get; set; }
+    [field: SerializeField] private LineRenderer Tracer { get; set; }
+    private FOVController fovController;
 
     [field: Header("Animation States")]
-    [field: SerializeField] private string FireAnimation { get; set; }
-    [field: SerializeField] private string EmptyAnimation { get; set; }
-    [field: SerializeField] private string IdleAnimation { get; set; }
-    [field: SerializeField] private string ReloadAnimation { get; set; }
-    [field: SerializeField] private string EquipAnimation { get; set; }
+    [field: SerializeField] private string FireTrigger { get; set; }
+    [field: SerializeField] private string ReloadState { get; set; }
+    [field: SerializeField] private string ADSState { get; set; }
 
     [field: Header("Sounds")]
     [field: SerializeField] private AudioClip FireSound { get; set; }
@@ -57,22 +60,43 @@ public class Weapon : MonoBehaviour
     [field: SerializeField] private AudioClip EquipSound { get; set; }
     
     //  States
-    [SerializeField] private bool canFire = true;
-    [SerializeField] private bool canReload = true;
-    [SerializeField] private bool isReloading = false;
-    [SerializeField] private bool bufferedShot = false;
+    private bool canFire = true;
+    private bool canReload = true;
+    private bool isReloading = false;
+    private bool bufferedShot = false;
+    private bool isADS = false;
 
     private void Start()
     {
         minRecoilTimeStamp = RecoilFunction.keys[0].time;
         maxRecoilTimeStamp = RecoilFunction.keys[RecoilFunction.keys.Length-1].time;
+        fovController = Cam.GetComponent<FOVController>();
     }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) || bufferedShot)
+        isADS = (Input.GetMouseButton(1) && CurrentAmmo > 0);
+        Animator.SetBool(ADSState, isADS);
+        if(isADS)
         {
-            RequestShoot();
+            fovController.FOVMultiplier = ADSFOVMultiplier;
+        } else
+        {
+            fovController.FOVMultiplier = 1;
+        }
+
+        if(isFullAuto && CurrentAmmo > 0)
+        {
+            if (Input.GetMouseButton(0))    //  don't check for buffered shot because it will be near impossible to tap fire
+            {
+                RequestShoot();
+            }
+        } else
+        {
+            if (Input.GetMouseButtonDown(0) || bufferedShot)
+            {
+                RequestShoot();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -108,15 +132,15 @@ public class Weapon : MonoBehaviour
             Debug.Log(hit.collider.gameObject.name);
         }
 
-        
-        
-
         if (CurrentAmmo != 0)
         {
             CurrentAmmo--;
             DoRecoil();
-            Animator.Play(FireAnimation, -1, 0f);
+            Animator.SetTrigger(FireTrigger);
             MuzzleFlash.Play();
+            LineRenderer tracerInstance = Instantiate(Tracer);
+            tracerInstance.SetPosition(0, TracerStartPosition.position);
+            tracerInstance.SetPosition(1, hit.point);
 
             if (CurrentAmmo > DryAmmoThreshold)
             {
@@ -171,7 +195,6 @@ public class Weapon : MonoBehaviour
             StartCoroutine(ReloadRoutine());
             currentRecoilTimeStamp = minRecoilTimeStamp;
             AudioSrc.PlayOneShot(ReloadSound);
-            Animator.Play(ReloadAnimation, -1, 0f);
         }
     }
 
@@ -181,8 +204,10 @@ public class Weapon : MonoBehaviour
         canFire = false;
         canReload = false;
         isReloading = true;
+        Animator.SetBool(ReloadState, true);
         //animator.Play(reloadAnimation);
         yield return new WaitForSeconds(ReloadTime);
+        Animator.SetBool(ReloadState, false);
         canFire = true;
         canReload = true;
         isReloading = false;
