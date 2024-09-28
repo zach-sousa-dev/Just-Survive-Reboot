@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity = 5f;
     [SerializeField] private float yVel = 0;
     [SerializeField] private float airMovementAccel = 0.5f;
+    [field: SerializeField] private float headRadius;
+    [field: SerializeField] private LayerMask ignoreMask;
+    [field: SerializeField] private Vector3 headTransform;
 
     private Camera cam;
 
@@ -112,6 +115,11 @@ public class PlayerController : MonoBehaviour
 
         if (!cc.isGrounded) {
             yVel -= gravity * Time.deltaTime;
+            if (Physics.CheckSphere(transform.position + headTransform, headRadius, ignoreMask))
+            {
+                Debug.Log("kek");
+                yVel = -Mathf.Abs(yVel);
+            }
         } else {
             yVel = (-cc.stepOffset / Time.deltaTime) / 100;
         }
@@ -137,5 +145,10 @@ public class PlayerController : MonoBehaviour
     }
     public void disableRunInversion() {
         shiftInversion = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position + headTransform, headRadius);
     }
 }
